@@ -1,4 +1,4 @@
-export interface userLoginDTO {
+export interface userRegisterDTO {
     token: string,
     user: {
         id: number,

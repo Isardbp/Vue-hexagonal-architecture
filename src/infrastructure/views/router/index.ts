@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
+import AuthView from '../views/AuthView.vue'
 import { userService } from "@/domain/services/User.service";
 
 const routes: Array<RouteRecordRaw> = [
@@ -10,9 +10,9 @@ const routes: Array<RouteRecordRaw> = [
     component: HomeView
   },
   {
-    path: '/login',
-    name: 'login',
-    component: LoginView
+    path: '/auth',
+    name: 'auth',
+    component: AuthView
   },
 ]
 
@@ -22,9 +22,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if ((to.path !== '/login' && to.path !== 'login') && !userService.userIsLogged()) {
-    next({ path: '/login' })
-  } else if ((to.path === '/login' || to.path === 'login') && userService.userIsLogged()) {
+  if ((to.path !== '/auth' && to.path !== 'auth') && !userService.userIsLogged()) {
+    next({ path: '/auth' })
+  } else if ((to.path === '/auth' || to.path === 'auth') && userService.userIsLogged()) {
     next({ path: '/' })
   } else {
     next()

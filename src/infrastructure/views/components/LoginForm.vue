@@ -1,16 +1,16 @@
 <template>
-  <form
-    @submit.prevent="
-      () => {
-        handleLogIn(loginForm);
-      }
-    "
-  >
-    <label for="user-login">user</label>
-    <input id="user-login" type="text" v-model="loginForm.user" />
-    <label for="user-password">password</label>
-    <input id="user-password" type="password" v-model="loginForm.password" />
-    <button>Login</button>
+  <form @submit.prevent="
+    () => {
+      handleLogIn(loginForm);
+    }
+  ">
+    <label for="chk" aria-hidden="true">Login</label>
+    <div v-if="!loading">
+      <input id="user-email" type="email" name="email" placeholder="Email" v-model="loginForm.email" />
+      <input class="user-password" type="password" name="pswd" placeholder="Password" v-model="loginForm.password" />
+      <button>Login</button>
+    </div>
+    <LoadingBalls :white="true" v-else />
   </form>
 </template>
 
@@ -18,27 +18,33 @@
 import { defineComponent } from "vue";
 import { UserLogin } from "@/domain/models/User";
 import { userService } from "@/domain/services/User.service";
+import LoadingBalls from "./LoadingBalls.vue"
 
 type DataProps = {
-  loginForm: {
-    user: string | null;
-    password: string | null;
-  };
+  loginForm: UserLogin;
+  loading: boolean;
 };
 
 export default defineComponent({
   name: "LoginForm",
+  components: {
+    LoadingBalls
+  },
   data(): DataProps {
     return {
       loginForm: {
-        user: null,
-        password: null,
+        email: '',
+        password: '',
       },
+      loading: false
     };
   },
   methods: {
     handleLogIn(user: UserLogin) {
-      userService.login(user);
+      this.loading = true
+      userService.login(user).catch(() => {
+        this.loading = false;
+      });
     },
   },
 });

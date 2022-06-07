@@ -9,3 +9,7 @@ export default defineComponent({
   name: "App"
 });
 </script>
+
+<style>
+  @import './infrastructure/views/styles/index.scss';
+</style>
